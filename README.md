@@ -5,6 +5,8 @@
 [![Estágio](https://img.shields.io/badge/Estágio-MVP%20%2F%20Prototipagem-orange.svg)](#)
 [![Impacto SUS/SUAS](https://img.shields.io/badge/Impacto-SUS%20%2F%20SUAS-green.svg)](#)
 
+![Visualização 3D do Suporte Pélvico](models/renders/preview_suporte.png)
+
 ---
 
 ## 📌 Contexto e Problema
