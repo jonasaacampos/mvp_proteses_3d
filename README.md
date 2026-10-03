@@ -1,26 +1,46 @@
-# 🦿 Sistema Paramétrico de Estabilização Pélvica de Baixo Custo
-> Tecnologia Assistiva Aberta para Estímulo ao Reflexo de Marcha em Residências Inclusivas.
+# 🦿 MVP: Sistema Paramétrico de Estabilização Pélvica de Baixo Custo
+> Tecnologia Assistiva Aberta em Manufatura Aditiva para Estímulo ao Reflexo de Marcha em Residência Inclusiva.
 
-[![Open Source](https://img.shields.io/badge/Open_Source-Hardware_%26_Code-blue.svg)](#)
-[![Status](https://img.shields.io/badge/Status-MVP_Prototipagem-orange.svg)](#)
-[![SUS/SUAS](https://img.shields.io/badge/Impacto-SUS_%2F_SUAS-green.svg)](#)
-
-## 📌 O Problema
-Adultos cadeirantes institucionalizados frequentemente enfrentam imobilismo crônico. Dispositivos comerciais de bipedestação têm custos proibitivos e tamanhos rígidos que desconsideram assimetrias corporais severas, resultando em abandono ou lesões por pressão.
-
-## 💡 A Solução
-Desenvolver um sistema paramétrico de código aberto (Python/OpenSCAD) que transforma medidas antropométricas simples em arquivos 3D prontos para impressão FDM em filamento PETG, integrados a um chassi metálico de baixo custo adaptável a cadeiras de rodas.
+[![Licença: MIT / CERN-OHL](https://img.shields.io/badge/License-MIT%20%2F%20Open%20Hardware-blue.svg)](#)
+[![Estágio](https://img.shields.io/badge/Estágio-MVP%20%2F%20Prototipagem-orange.svg)](#)
+[![Impacto SUS/SUAS](https://img.shields.io/badge/Impacto-SUS%20%2F%20SUAS-green.svg)](#)
 
 ---
 
-## 🎯 Metas do MVP (Fase Atual)
-- [x] Levantamento do protocolo antropométrico de medidas clínicas.
-- [x] Algoritmo base em OpenSCAD para geração da casca de contenção.
-- [ ] Impressão 3D do primeiro protótipo funcional em escala 1:1 (PETG).
-- [ ] Montagem da interface de acolchoamento e testes mecânicos de bancada.
-- [ ] Validação clínica com protocolo de bipedestação de 12 semanas.
+## 📌 Contexto e Problema
+Adultos cadeirantes institucionalizados em serviços de acolhimento (como Residências Inclusivas) frequentemente vivenciam quadros severos de imobilismo crônico. Embora muitos indivíduos preservem o reflexo de marcha automática, a falta de alinhamento e ancoragem segura da pelve inviabiliza sua ativação funcional no dia a dia. 
+
+Os dispositivos comerciais convencionais de bipedestação apresentam:
+- **Custo proibitivo** para serviços públicos e filantrópicos.
+- **Estruturas rígidas e padronizadas**, incompatíveis com deformidades posturais e assimetrias anatômicas severas.
+- Alto risco de lesões por pressão (LPP) nas cristas ilíacas e trocânteres.
 
 ---
+
+## 💡 A Solução Proposta
+Desenvolvimento de uma **órtese híbrida paramétrica de baixo custo**:
+1. **Design Digital via Código:** Algoritmo livre (OpenSCAD/Python) que recebe as variáveis anatômicas do residente (largura bi-ilíaca, profundidade sagital e perímetros) e gera instantaneamente a malha tridimensional sob medida (.STL).
+2. **Manufatura Aditiva:** Impressão das interfaces de suporte em filamento PETG com preenchimento tipo giroide (alta resistência mecânica e leveza).
+3. **Chassi Híbrido Acoplável:** Estrutura metálica leve e de baixo custo, acoplável à cadeira de rodas com acolchoamento técnico protetor (EVA/Neoprene).
+
+---
+
+## 📁 Estrutura do Repositório
+```text
+mvp_proteses_3d/
+├── docs/
+│   ├── protocolo_antropometrico.md  # Roteiro de medição das cristas e trocânteres
+│   └── orcamento_e_captacao.md      # Metas financeiras detalhadas e custos
+├── models/
+│   ├── stl/                         # Arquivos 3D compilados para teste
+│   └── renders/                     # Vistas conceituais e simulações
+├── src/
+│   └── pelve_parametrica.scad       # Código-fonte gerador do suporte pélvico
+├── LICENSE                          # Licença de código aberto
+└── README.md                        # Apresentação do projeto e captação
+
+---
+```
 
 ## 🤝 Como Apoiar / Metas de Financiamento
 
