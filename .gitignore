@@ -1,0 +1,12 @@
+# OpenSCAD generated output
+*.stl
+*.3mf
+*.amf
+*.obj
+*.off
+
+# Editor and OS noise
+.DS_Store
+Thumbs.db
+*.swp
+*.tmp
