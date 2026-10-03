@@ -1,48 +1,77 @@
-// ==========================================
-// MVP - SUPORTE PÉLVICO PARAMÉTRICO DE BAIXO CUSTO
-// ==========================================
+// ========================================================
+// MVP v2 - SUPORTE PÉLVICO PARAMÉTRICO ROBUSTO (SEM ERRO DE MALHA)
+// ========================================================
 
-// Variáveis Antropométricas de Entrada (em mm)
-largura_biiliaca = 280;     // Distância EIAS-EIAS
+// Qual parte exportar para fatiar? 
+// Opções: "esquerdo", "direito", "ambos"
+modo_impressao = "esquerdo"; 
+
+// --- Variáveis Antropométricas de Entrada (em mm) ---
+largura_biiliaca     = 280; // Distância entre as EIAS
 profundidade_sagital = 180; // EIAS até crista posterior
-espessura_parede = 6;       // Resistência mecânica para PETG
-altura_apoio = 80;          // Altura de contenção da crista
-raio_curvatura = 35;        // Suavização anatômica
+altura_apoio         = 80;  // Altura de contenção vertical
+espessura_parede     = 6;   // Espessura sólida para PETG (reforçada)
+raio_curvatura       = 40;  // Raio anatômico das cristas
 
-$fn = 60; // Resolução da malha
+$fn = 60; // Resolução das curvas
 
-module suporte_base() {
+module aba_pelvica(lado="esquerdo") {
+    sinal = (lado == "esquerdo") ? -1 : 1;
+    
     difference() {
-        // Bloco externo anatômico
+        // 1. Corpo Sólido Anatômico do Lado Selecionado
         hull() {
-            translate([-largura_biiliaca/2, 0, 0])
+            // Apoio da Crista Ilíaca Anterior (EIAS)
+            translate([sinal * (largura_biiliaca/2), 0, 0])
                 cylinder(r=raio_curvatura + espessura_parede, h=altura_apoio, center=true);
-            translate([largura_biiliaca/2, 0, 0])
-                cylinder(r=raio_curvatura + espessura_parede, h=altura_apoio, center=true);
-            translate([0, -profundidade_sagital, 0])
+                
+            // Transição Lateral Posterior (abraça o quadril)
+            translate([sinal * (largura_biiliaca/2 - 20), -profundidade_sagital * 0.7, 0])
+                cylinder(r=raio_curvatura + espessura_parede - 2, h=altura_apoio, center=true);
+                
+            // Ancoragem Sacral Posterior (apoio de encosto)
+            translate([sinal * 25, -profundidade_sagital, 0])
                 cylinder(r=raio_curvatura + espessura_parede, h=altura_apoio, center=true);
         }
         
-        // Alívio interno (espaço do corpo + offset de conforto)
+        // 2. Alívio Interno (Cavidade do Corpo + Folga de Almofada EVA)
         hull() {
-            translate([-largura_biiliaca/2, 0, 0])
-                cylinder(r=raio_curvatura, h=altura_apoio + 2, center=true);
-            translate([largura_biiliaca/2, 0, 0])
-                cylinder(r=raio_curvatura, h=altura_apoio + 2, center=true);
-            translate([0, -profundidade_sagital, 0])
-                cylinder(r=raio_curvatura, h=altura_apoio + 2, center=true);
+            translate([sinal * (largura_biiliaca/2), 0, 0])
+                cylinder(r=raio_curvatura, h=altura_apoio + 10, center=true);
+                
+            translate([sinal * (largura_biiliaca/2 - 20), -profundidade_sagital * 0.7, 0])
+                cylinder(r=raio_curvatura - 2, h=altura_apoio + 10, center=true);
+                
+            translate([sinal * 25, -profundidade_sagital, 0])
+                cylinder(r=raio_curvatura, h=altura_apoio + 10, center=true);
         }
         
-        // Abertura frontal para encaixe/desencaixe rápido
-        translate([0, 50, 0])
-            cube([largura_biiliaca * 0.8, 150, altura_apoio + 10], center=true);
+        // 3. Fenda Frontal Reforçada para Cinta de Velcro (50 mm de largura)
+        translate([sinal * (largura_biiliaca/2 + 5), 10, 0])
+            cube([8, 52, 54], center=true);
+
+        // 4. Fenda Posterior para Cinta Sacral / Acoplamento
+        translate([sinal * 45, -profundidade_sagital, 0])
+            cube([52, 8, 54], center=true);
             
-        // Fendas para cintas de velcro (50 mm x 4 mm)
-        translate([-largura_biiliaca/2, 10, 0])
-            cube([6, 50, 52], center=true);
-        translate([largura_biiliaca/2, 10, 0])
-            cube([6, 50, 52], center=true);
+        // 5. Furação Passante para Parafuso M6 (Fixação no Chassi Metálico)
+        translate([sinal * (largura_biiliaca/2 - 15), -profundidade_sagital * 0.5, 0])
+            rotate([0, 90, (lado == "esquerdo") ? 15 : -15])
+                cylinder(r=3.2, h=80, center=true); // Diâmetro 6.4mm para parafuso M6
     }
 }
 
-suporte_base();
+// Renderização condicional
+if (modo_impressao == "esquerdo") {
+    // Centraliza o lado esquerdo na origem (perfeito para a placa de impressão)
+    translate([largura_biiliaca/4, profundidade_sagital/2, 0])
+        aba_pelvica("esquerdo");
+} else if (modo_impressao == "direito") {
+    // Centraliza o lado direito na origem
+    translate([-largura_biiliaca/4, profundidade_sagital/2, 0])
+        aba_pelvica("direito");
+} else {
+    // Ambos juntos
+    aba_pelvica("esquerdo");
+    aba_pelvica("direito");
+}
